@@ -1,0 +1,38 @@
+# Python virtual environment
+.venv/
+venv/
+ENV/
+
+# Python caching
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Streamlit secrets (NEVER commit these)
+.streamlit/secrets.toml
+
+# Training and testing outputs
+training_logs/
+validation_results/
+test_results/
+results/
+
+# Enhanced test images
+enhanced_test*.png
+enhanced_test.png
+enhanced_test_clahe.png
+enhanced_test_edge.png
+enhanced_test_gamma.png
+low_light_test.jpg
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp

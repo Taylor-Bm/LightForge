@@ -1,0 +1,74 @@
+{
+  "default": {
+    "levels": 4,
+    "denoise_strength": 10,
+    "detail_strength": 0.8,
+    "gamma": 0.75,
+    "clahe_clip": 2.0,
+    "use_dl": true,
+    "device": "cuda"
+  },
+  "fast": {
+    "levels": 2,
+    "denoise_strength": 5,
+    "detail_strength": 0.5,
+    "gamma": 0.75,
+    "clahe_clip": 1.5,
+    "use_dl": false,
+    "device": "cpu"
+  },
+  "quality": {
+    "levels": 5,
+    "denoise_strength": 15,
+    "detail_strength": 1.2,
+    "gamma": 0.8,
+    "clahe_clip": 2.5,
+    "use_dl": true,
+    "device": "cuda"
+  },
+  "dark_images": {
+    "levels": 4,
+    "denoise_strength": 10,
+    "detail_strength": 1.0,
+    "gamma": 0.6,
+    "clahe_clip": 2.0,
+    "use_dl": true,
+    "device": "cuda"
+  },
+  "noisy_images": {
+    "levels": 5,
+    "denoise_strength": 20,
+    "detail_strength": 0.5,
+    "gamma": 0.75,
+    "clahe_clip": 1.5,
+    "use_dl": true,
+    "device": "cuda"
+  },
+  "balanced": {
+    "levels": 4,
+    "denoise_strength": 10,
+    "detail_strength": 0.8,
+    "gamma": 0.75,
+    "clahe_clip": 2.0,
+    "use_dl": true,
+    "device": "cuda"
+  },
+  "cpu_only": {
+    "levels": 3,
+    "denoise_strength": 8,
+    "detail_strength": 0.7,
+    "gamma": 0.75,
+    "clahe_clip": 1.8,
+    "use_dl": false,
+    "device": "cpu"
+  },
+  "maximum_detail": {
+    "levels": 6,
+    "denoise_strength": 12,
+    "detail_strength": 1.5,
+    "gamma": 0.8,
+    "clahe_clip": 2.5,
+    "use_dl": true,
+    "device": "cuda"
+  }
+}
