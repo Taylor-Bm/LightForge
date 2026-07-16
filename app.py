@@ -15,10 +15,12 @@ import torch
 from src.dncnn import get_dncnn_model
 from src.model_interface import ModelInterface, ModelConfig
 
-@st.cache_resource(show_spinner="Loading Pre-trained DnCNN Model...")
+@st.cache_resource
 def load_dl_model():
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    return get_dncnn_model(device=device), device
+    # Show a spinner while the model is loading (do not pass unsupported args to the decorator)
+    with st.spinner("Loading Pre-trained DnCNN Model..."):
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        return get_dncnn_model(device=device), device
 
 st.set_page_config(page_title="LightForge", layout="wide", page_icon="✨")
 
@@ -168,7 +170,7 @@ with tab2:
                 st.markdown("#### 🏆 Best Parameters Found")
                 
                 c1, c2, c3, c4 = st.columns(4)
-                c1.metric("Levels", best["levels"])
+                c1.metric("Levels", best["levels"]) 
                 c2.metric("Detail Strength", best["detail_strength"])
                 c3.metric("Gamma", best["gamma"])
                 c4.metric("CLAHE Clip", best["clahe_clip"])
