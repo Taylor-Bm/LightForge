@@ -3,26 +3,50 @@ import cv2
 import numpy as np
 from PIL import Image
 from pathlib import Path
-
-from src.multiscale_artifact_reduction import (
-    multi_scale_feature_extraction,
-    baseline_clahe,
-    baseline_gamma_correction,
-    baseline_edge_preserving
-)
-from src.utils import compute_metrics
 import torch
-from src.dncnn import get_dncnn_model
-from src.model_interface import ModelInterface, ModelConfig
 
+# Attempt to import core implementation from src/. If missing, show a friendly error in the UI
+try:
+    from src.multiscale_artifact_reduction import (
+        multi_scale_feature_extraction,
+        baseline_clahe,
+        baseline_gamma_correction,
+        baseline_edge_preserving
+    )
+    from src.utils import compute_metrics
+    from src.dncnn import get_dncnn_model
+    from src.model_interface import ModelInterface, ModelConfig
+    SRC_AVAILABLE = True
+    SRC_IMPORT_ERROR = None
+except Exception as e:
+    SRC_AVAILABLE = False
+    SRC_IMPORT_ERROR = e
+
+# Cached loader for DL model (if available)
 @st.cache_resource
 def load_dl_model():
-    # Show a spinner while the model is loading (do not pass unsupported args to the decorator)
+    if not SRC_AVAILABLE:
+        return None, "cpu"
+    # Show a spinner while the model is loading
     with st.spinner("Loading Pre-trained DnCNN Model..."):
         device = "cuda" if torch.cuda.is_available() else "cpu"
         return get_dncnn_model(device=device), device
 
 st.set_page_config(page_title="LightForge", layout="wide", page_icon="✨")
+
+# If core src package isn't available, show an error and stop execution early to avoid crashes
+if not SRC_AVAILABLE:
+    st.title("✨ LightForge: Multi-Scale Image Enhancement")
+    st.error(
+        "The application cannot import required modules from the `src` package.\n"
+        "Possible causes:\n"
+        " - You are running the app from a checkout that does not include the `src/` directory.\n"
+        " - The Python path is misconfigured and cannot find the local `src` package.\n\n"
+        f"Original import error: {SRC_IMPORT_ERROR}"
+    )
+    st.info("To fix: ensure the repository contains the `src/` folder (with files like multiscale_artifact_reduction.py, utils.py, dncnn.py) or install the package into your environment.\n"
+            "If you're deploying on Streamlit Cloud, include the src files in the repo and re-deploy.")
+    st.stop()
 
 # Custom CSS for a premium look
 st.markdown("""
