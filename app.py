@@ -1,9 +1,18 @@
+import sys
 import streamlit as st
 import cv2
 import numpy as np
 from PIL import Image
 from pathlib import Path
-import torch
+
+# Ensure repo root and src/ are on sys.path so local package imports work in varied environments
+repo_root = Path(__file__).parent.resolve()
+repo_root_str = str(repo_root)
+src_path = str(repo_root / "src")
+if repo_root_str not in sys.path:
+    sys.path.insert(0, repo_root_str)
+if src_path not in sys.path:
+    sys.path.insert(0, src_path)
 
 # Attempt to import core implementation from src/. If missing, show a friendly error in the UI
 try:
@@ -22,6 +31,8 @@ except Exception as e:
     SRC_AVAILABLE = False
     SRC_IMPORT_ERROR = e
 
+import torch
+
 # Cached loader for DL model (if available)
 @st.cache_resource
 def load_dl_model():
@@ -30,7 +41,12 @@ def load_dl_model():
     # Show a spinner while the model is loading
     with st.spinner("Loading Pre-trained DnCNN Model..."):
         device = "cuda" if torch.cuda.is_available() else "cpu"
-        return get_dncnn_model(device=device), device
+        try:
+            return get_dncnn_model(device=device), device
+        except Exception as e:
+            # Surface a friendly error if model init fails
+            st.error(f"Failed to initialize DnCNN model: {e}")
+            return None, "cpu"
 
 st.set_page_config(page_title="LightForge", layout="wide", page_icon="✨")
 
